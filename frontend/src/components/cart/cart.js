@@ -66,9 +66,9 @@ export const Cart = () => {
         <>
           <div className={styles.list}>
             {cart.map((item) => {
-              const { title, id = new Date(), images, price, quantity } = item;
+              const { title, id, images, price, quantity } = item;
               return (
-                <div className={styles.item} key={id}>
+                <div className={styles.item} key={Math.random() * price}>
                   <div
                     className={styles.image}
                     style={{ backgroundImage: `url(${images})` }}

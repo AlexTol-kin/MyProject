@@ -54,7 +54,7 @@ export const Orders = () => {
         <div className={styles.div}>
           <div className={styles.loginColum}>Покупатель</div>
           <div className={styles.registeredAtColum}>Дата заказа</div>
-          <div className={styles.roleColum}>Сумма</div>
+          <div className={styles.registeredAtColum}>Сумма</div>
           <div className={styles.orderDiv}>Заказ</div>
         </div>
 
@@ -68,8 +68,10 @@ export const Orders = () => {
             <div className={styles.registeredAtColum}>{item.registeredAt}</div>
             <div className={styles.loginColum}>{item.price}</div>
             <ul className={styles.order}>
-              {item.orders.map((order) => (
-                <li className={styles.ul}>{order.title}</li>
+              {item.orders.map((order, i) => (
+                <li key={item.id + i} className={styles.ul}>
+                  {order.title} {order.quantity}шт.
+                </li>
               ))}
             </ul>
             <button onClick={() => onOrderRemove(item.buyer, item.id)}>
