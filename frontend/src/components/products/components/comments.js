@@ -48,9 +48,14 @@ export const Comments = ({ comments, productId, isGuest }) => {
             placeholder="Комментарий..."
             onChange={({ target }) => setNewComment(target.value)}
           ></textarea>
-          <button onClick={() => onNewCommentAdd(productId, newComment)}>
-            Отправить
-          </button>
+          <div>
+            <button
+              className={styles.buttom}
+              onClick={() => onNewCommentAdd(productId, newComment)}
+            >
+              Отправить
+            </button>
+          </div>
         </div>
       )}
       <div className={styles.comments}>
@@ -59,12 +64,14 @@ export const Comments = ({ comments, productId, isGuest }) => {
             <div className={styles.comment}>
               <div className={styles.informationPanel}>
                 <div className={styles.author}>{author}</div>
-                <div className={styles.publishedAt}>{publishedAt}</div>
+                <div className={styles.publishedAt}>
+                  {publishedAt.slice(0, 10)}
+                </div>
               </div>
               <div className={styles.commentText}> {content} </div>
             </div>
             {isAdminOrModerator && (
-              <button onClick={() => onCommentRemove(id)}>Уд</button>
+              <button onClick={() => onCommentRemove(id)}>🗑</button>
             )}
           </div>
         ))}

@@ -7,7 +7,6 @@ export const saveProductAsync = (id, newProductData) => (dispatch) => {
     : request(`/products`, "POST", newProductData);
   return saveRequest.then((updatedProduct) => {
     dispatch(setProductData(updatedProduct.data));
-    console.log(updatedProduct.data);
 
     return updatedProduct.data;
   });

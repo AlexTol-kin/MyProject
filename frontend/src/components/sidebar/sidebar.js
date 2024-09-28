@@ -4,8 +4,6 @@ import { NavLink } from "react-router-dom";
 import styles from "../../styles/Sidebar.module.css";
 
 const Sidebar = ({ products }) => {
-  console.log(products);
-
   const isCategory = eliminateDuplicates(
     products.map(({ category }) => category)
   );

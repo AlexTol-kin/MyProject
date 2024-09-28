@@ -56,7 +56,6 @@ const UserSignupForm = ({ toggleCurrentFormType, closeForm }) => {
   });
 
   const [serverError, setServerError] = useState(null);
-
   const roleId = useSelector(selectUserRole);
 
   useResetForm(reset);
@@ -71,7 +70,6 @@ const UserSignupForm = ({ toggleCurrentFormType, closeForm }) => {
 
         dispatch(setUser(user));
         sessionStorage.setItem("userData", JSON.stringify(user));
-        console.log(user);
       }
     );
   };
@@ -88,11 +86,11 @@ const UserSignupForm = ({ toggleCurrentFormType, closeForm }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.close} onClick={closeForm}>
+      <Link to="/" className={styles.close}>
         <svg className="icon">
           <use xlinkHref={`${process.env.PUBLIC_URL}/sprite.svg#close`} />
         </svg>
-      </div>
+      </Link>
       <div className={styles.title}>Зарегистрироваться</div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.group}>

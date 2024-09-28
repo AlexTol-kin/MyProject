@@ -7,7 +7,7 @@ import { selectUserRole } from "../../selectors";
 
 import styles from "../../styles/Products.module.css";
 
-const Products = ({ products = [], amount }) => {
+const Products = ({ products = [] }) => {
   const userRole = useSelector(selectUserRole);
 
   const isAdminOrModerator = [ROLE.ADMIN, ROLE.MODERATOR].includes(userRole);
@@ -19,8 +19,9 @@ const Products = ({ products = [], amount }) => {
           <button>Добавить продукт</button>
         </Link>
       )}
+
       <div className={styles.list}>
-        {products.map(({ id, imageUrl, title, category, price, comments }) => (
+        {products.map(({ id, imageUrl, title, category, price, available }) => (
           <Link to={`/products/${id}`} key={id} className={styles.product}>
             <div
               className={styles.image}
@@ -36,9 +37,11 @@ const Products = ({ products = [], amount }) => {
                   <div className={styles.oldPrice}>
                     {Math.floor(price * 1.2)}₽
                   </div>
-                  {/* <div className={styles.purchases}>
-                    {comments.length} Оставили отзыв
-                  </div> */}
+                  {available ? (
+                    <div className={styles.purchases}>
+                      {available} в наличии
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>

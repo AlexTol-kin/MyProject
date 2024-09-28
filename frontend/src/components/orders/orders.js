@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { request } from "../../utils/request";
 import { ROLE } from "../../constans";
 import { checkAccess } from "../../utils/check-acces";
 
 import { selectUserRole } from "../../selectors";
-import { removeOrderAsync } from "../../actions";
 
 import styles from "./orders.module.css";
+import { closeModal, openModal } from "../../actions";
 
 export const Orders = () => {
+  const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [ordersAll, setOrdersAll] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [shouldUpdateUserList, setShouldUpdateUserList] = useState(false);
   const userRole = useSelector(selectUserRole);
 
@@ -20,7 +20,6 @@ export const Orders = () => {
     Promise.all([request(`/users`), request(`/users/orders`)]).then(
       ([usersRes, orderRes]) => {
         if (usersRes.error || orderRes.error) {
-          setErrorMessage(usersRes.error || orderRes.error);
           return;
         }
 
@@ -34,10 +33,18 @@ export const Orders = () => {
     if (!checkAccess([ROLE.ADMIN], userRole)) {
       return;
     }
-
-    request(`/users/${userId}/orders/${id}`, "DELETE").then(() => {
-      setShouldUpdateUserList(!shouldUpdateUserList);
-    });
+    dispatch(
+      openModal({
+        text: "Удалить заказ?",
+        onConfirm: () => {
+          request(`/users/${userId}/orders/${id}`, "DELETE").then(() => {
+            setShouldUpdateUserList(!shouldUpdateUserList);
+          });
+          dispatch(closeModal);
+        },
+        onCancel: () => dispatch(closeModal),
+      })
+    );
   };
 
   return (
@@ -48,12 +55,11 @@ export const Orders = () => {
           <div className={styles.loginColum}>Покупатель</div>
           <div className={styles.registeredAtColum}>Дата заказа</div>
           <div className={styles.roleColum}>Сумма</div>
-          <div className={styles.orderDiv}>Заказано</div>
+          <div className={styles.orderDiv}>Заказ</div>
         </div>
 
         {ordersAll.map((item) => (
           <div key={item.id} className={styles.userRow}>
-            {console.log(item.orders)}
             <div className={styles.loginColum}>
               {users.map((user) =>
                 user.id === item.buyer ? user.login : null

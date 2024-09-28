@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -129,7 +131,6 @@ app.post("/users/:id/orders", async (req, res) => {
     price: req.body.price,
     orders: req.body.orders,
   });
-  console.log(orders);
 
   res.send({ data: mapOrder(orders) });
 });
@@ -191,8 +192,6 @@ app.post("/products/:id/comments", async (req, res) => {
     rating: req.body.rating,
   });
 
-  console.log(newComment);
-
   res.send({ data: mapComment(newComment) });
 });
 
@@ -206,12 +205,8 @@ app.delete(
   }
 );
 
-mongoose
-  .connect(
-    "mongodb+srv://cashaqwertty:LqMsGbTNRcs80mtR@cluster0.tqfhvza.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0"
-  )
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`Server started on port ${port}`);
-    });
+mongoose.connect(process.env.DB_CONNECTION_STRING).then(() => {
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
   });
+});

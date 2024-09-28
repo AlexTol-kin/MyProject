@@ -25,7 +25,6 @@ import styles from "../../styles/Product.module.css";
 
 const Product = () => {
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
   const cart = useSelector(selectCart);
 
@@ -58,12 +57,10 @@ const Product = () => {
 
   useEffect(() => {
     if (isCreating) {
-      setIsLoading(false);
       return;
     }
     dispatch(loadProductAsync(params.id)).then((productData) => {
       setError(productData.error);
-      setIsLoading(false);
     });
   }, [dispatch, params.id, isCreating]);
 
@@ -89,7 +86,6 @@ const Product = () => {
     <div className={styles.product}>
       <div className={styles.images}>
         <img className={styles.image} src={product.imageUrl} alt="" />
-        {/* <div className={styles.current} /> */}
         <div className={styles["images-list"]}>
           <div className={styles.info}>
             <h1 className={styles.title}>{product.title}</h1>
@@ -107,14 +103,19 @@ const Product = () => {
               </Link>
             )}
             {isAdminOrModerator && (
-              <button onClick={() => onProductRemove(product.id)}>
-                Удалить
-              </button>
+              <div className={styles.product}>
+                <button
+                  className={styles.product}
+                  onClick={() => onProductRemove(product.id)}
+                >
+                  Удалить
+                </button>
+              </div>
             )}
           </div>
         </div>
         <p>{product.content}</p>
-        <div className={styles.actions}>
+        <div className={styles.buttom}>
           {isUser ? (
             <button onClick={onAddToCart} className={styles.add}>
               Добавить в корзину

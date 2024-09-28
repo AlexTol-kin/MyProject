@@ -10,7 +10,6 @@ async function register(login, password, cart) {
     throw new Error("Password is empty");
   }
   const passwordHash = await bcrypt.hash(password, 10);
-  console.log(User);
 
   const user = await User.create({ login, password: passwordHash, cart });
   const token = generate({ id: user.id });

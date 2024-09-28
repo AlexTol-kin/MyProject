@@ -197,9 +197,10 @@
 }
 
 .menu {
+  margin: auto;
   display: flex;
   align-items: center;
-  display: flex;
+  /* width: 90%; */
   padding: 0 10px;
 }
 
@@ -210,6 +211,10 @@
   display: flex;
   padding: 0 10px;
   width: 172px;
+  height: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .link:hover {

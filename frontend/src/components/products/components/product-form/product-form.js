@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,8 +13,6 @@ export const ProductForm = () => {
 
   const product = useSelector(selectProduct);
 
-  console.log(params.id);
-
   const { title, imageUrl, category, price, available, content } = product;
 
   const [imageUrlValue, setImageUrlValue] = useState(id ? imageUrl : "");
@@ -23,8 +21,6 @@ export const ProductForm = () => {
   const [priceValue, setPriceValue] = useState(id ? price : "");
   const [availableValue, setАvailableValue] = useState(id ? available : "");
   const [сontentValue, setСontentValue] = useState(id ? content : "");
-
-  const contentRef = useRef(null);
 
   useLayoutEffect(() => {
     setImageUrlValue(imageUrl);

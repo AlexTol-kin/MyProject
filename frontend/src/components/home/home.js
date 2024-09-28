@@ -19,6 +19,7 @@ const Home = () => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [productsAll, setProductsAll] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCat, setIsLoadingCat] = useState(false);
 
   const isCategory = eliminateDuplicates(
     productsAll.map(({ category }) => category)
@@ -38,8 +39,8 @@ const Home = () => {
     });
     request(`/products/all`).then(({ data: products }) => {
       setProductsAll(products);
+      setIsLoading(false);
     });
-    setIsLoading(false);
   }, [page, shouldSearch, searchPhrase]);
 
   const updateSearchPhrase = debounce((value) => {
@@ -67,9 +68,11 @@ const Home = () => {
   const onThisCategory = (category) => {
     if (!category) {
       setShouldSearch(!shouldSearch);
+      setIsLoadingCat(!isLoadingCat);
     }
     setProducts(productsAll.filter((id) => id.category === category));
     setProductsAll(products.filter((id) => id.category === category));
+    setIsLoadingCat(!isLoadingCat);
   };
 
   return (
@@ -88,12 +91,15 @@ const Home = () => {
           />
         </div>
       </form>
+
       <section className={styles.sidebar}>
         <div className={styles.title}>Категории</div>
         <div className={styles.menu}>
-          <div className={styles.link} onClick={() => onThisCategory()}>
-            Все категории
-          </div>
+          {isLoadingCat && (
+            <div className={styles.link} onClick={() => onThisCategory()}>
+              Все категории
+            </div>
+          )}
           {isCategory.map((category) => (
             <div
               key={category}
@@ -105,11 +111,12 @@ const Home = () => {
           ))}
         </div>
       </section>
+
       {isLoading ? (
-        <div className={styles.link}>Идет загрузка</div>
+        <div className={styles.sidebar}>Подождите, идет загрузка...</div>
       ) : (
         <div>
-          <Products products={products} amount={5} title="Trending" />
+          <Products products={products} amount={5} />
           {lastPage > 1 && products.length > 0 && (
             <Pagination page={page} lastPage={lastPage} setPage={setPage} />
           )}

@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import styles from "./users.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { request } from "../../utils/request";
 import { ROLE } from "../../constans";
 import { checkAccess } from "../../utils/check-acces";
 import { UserRow } from "./components";
-
 import { selectUserRole } from "../../selectors";
+import { closeModal, openModal } from "../../actions";
+
+import styles from "./users.module.css";
 
 export const Users = () => {
+  const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
   const [shouldUpdateUserList, setShouldUpdateUserList] = useState(false);
   const userRole = useSelector(selectUserRole);
 
@@ -19,11 +20,9 @@ export const Users = () => {
     if (!checkAccess([ROLE.ADMIN], userRole)) {
       return;
     }
-
     Promise.all([request(`/users`), request(`/users/roles`)]).then(
       ([usersRes, rolesRes]) => {
         if (usersRes.error || rolesRes.error) {
-          setErrorMessage(usersRes.error || rolesRes.error);
           return;
         }
 
@@ -37,10 +36,18 @@ export const Users = () => {
     if (!checkAccess([ROLE.ADMIN], userRole)) {
       return;
     }
-
-    request(`/users/${userId}`, "DELETE").then(() => {
-      setShouldUpdateUserList(!shouldUpdateUserList);
-    });
+    dispatch(
+      openModal({
+        text: "Удалить пользователя?",
+        onConfirm: () => {
+          request(`/users/${userId}`, "DELETE").then(() => {
+            setShouldUpdateUserList(!shouldUpdateUserList);
+          });
+          dispatch(closeModal);
+        },
+        onCancel: () => dispatch(closeModal),
+      })
+    );
   };
 
   return (
