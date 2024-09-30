@@ -30,7 +30,7 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const isCreating = !!useMatch("/post/");
+  const isCreating = !!useMatch("/products/");
   const product = useSelector(selectProduct);
   const userRole = useSelector(selectUserRole);
 
@@ -39,7 +39,7 @@ const Product = () => {
   const onProductRemove = (id) => {
     dispatch(
       openModal({
-        text: "Удалить пост?",
+        text: "Удалить продукт?",
         onConfirm: () => {
           dispatch(removeProductAsync(id)).then(() => {
             navigate("/");

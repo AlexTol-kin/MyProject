@@ -31,24 +31,24 @@ export const ProductForm = () => {
   const navigate = useNavigate();
 
   const onSave = () => {
-    // const newContent = sanitizeContent(contentRef.current.innerHTML);
-
-    dispatch(
-      saveProductAsync(id, {
-        imageUrl: imageUrlValue,
-        title: titleValue,
-        category: categoryValue,
-        price: priceValue,
-        available: availableValue,
-        content: сontentValue,
-      })
-    ).then(({ id }) => navigate(`/products/${id}`));
-    setImageUrlValue("");
-    setTitleValue("");
-    setCategoryValue("");
-    setPriceValue("");
-    setАvailableValue("");
-    setСontentValue("");
+    if (imageUrlValue) {
+      dispatch(
+        saveProductAsync(id, {
+          imageUrl: imageUrlValue,
+          title: titleValue,
+          category: categoryValue,
+          price: priceValue,
+          available: availableValue,
+          content: сontentValue,
+        })
+      ).then(({ id }) => navigate(`/products/${id}`));
+      setImageUrlValue("");
+      setTitleValue("");
+      setCategoryValue("");
+      setPriceValue("");
+      setАvailableValue("");
+      setСontentValue("");
+    }
   };
 
   const onImageChange = ({ target }) => setImageUrlValue(target.value);

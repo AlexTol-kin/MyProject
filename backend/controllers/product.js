@@ -34,12 +34,12 @@ function deleteProduct(id) {
 
 // get list with search and pagination
 
-async function getProducts(search = "", limit = 10, page = 1) {
+async function getProducts(search = "", limit = 10, page = 1, sorts = 1) {
   const [products, count] = await Promise.all([
     Product.find({ title: { $regex: search, $options: "i" } })
       .limit(limit)
       .skip((page - 1) * limit)
-      .sort({ price: -1 }),
+      .sort({ price: +sorts }),
     Product.countDocuments({ title: { $regex: search, $options: "i" } }),
   ]);
 

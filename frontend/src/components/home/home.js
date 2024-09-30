@@ -20,6 +20,7 @@ const Home = () => {
   const [productsAll, setProductsAll] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingCat, setIsLoadingCat] = useState(false);
+  const [selectSort, setSelectSort] = useState(-1);
 
   const isCategory = eliminateDuplicates(
     productsAll.map(({ category }) => category)
@@ -32,7 +33,7 @@ const Home = () => {
   useEffect(() => {
     setIsLoading(true);
     request(
-      `/products?search=${searchPhrase}&page=${page}&limit=${PAGINATION_LIMIT}`
+      `/products?search=${searchPhrase}&page=${page}&limit=${PAGINATION_LIMIT}&sorts=${selectSort}`
     ).then(({ data: { products, lastPage } }) => {
       setProducts(products);
       setLastPage(lastPage);
@@ -41,7 +42,7 @@ const Home = () => {
       setProductsAll(products);
       setIsLoading(false);
     });
-  }, [page, shouldSearch, searchPhrase]);
+  }, [page, shouldSearch, selectSort]);
 
   const updateSearchPhrase = debounce((value) => {
     if (value.length > 0) {
@@ -73,6 +74,14 @@ const Home = () => {
     setProducts(productsAll.filter((id) => id.category === category));
     setProductsAll(products.filter((id) => id.category === category));
     setIsLoadingCat(!isLoadingCat);
+  };
+
+  const onSelectSort = (value) => {
+    if (selectSort === 1) {
+      setSelectSort(-1);
+    } else {
+      setSelectSort(1);
+    }
   };
 
   return (
@@ -116,7 +125,12 @@ const Home = () => {
         <div className={styles.sidebar}>Подождите, идет загрузка...</div>
       ) : (
         <div>
-          <Products products={products} amount={5} />
+          <Products
+            onSelectSort={onSelectSort}
+            selectSort={selectSort}
+            products={products}
+            amount={5}
+          />
           {lastPage > 1 && products.length > 0 && (
             <Pagination page={page} lastPage={lastPage} setPage={setPage} />
           )}

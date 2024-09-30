@@ -7,7 +7,7 @@ import { selectUserRole } from "../../selectors";
 
 import styles from "../../styles/Products.module.css";
 
-const Products = ({ products = [] }) => {
+const Products = ({ products = [], selectSort, onSelectSort }) => {
   const userRole = useSelector(selectUserRole);
 
   const isAdminOrModerator = [ROLE.ADMIN, ROLE.MODERATOR].includes(userRole);
@@ -19,6 +19,13 @@ const Products = ({ products = [] }) => {
           <button>Добавить продукт</button>
         </Link>
       )}
+
+      <button
+        className={selectSort !== 1 ? styles.sortUp : styles.sortDown}
+        onClick={onSelectSort}
+      >
+        {selectSort !== 1 ? "⇵" : "⇅"}
+      </button>
 
       <div className={styles.list}>
         {products.map(({ id, imageUrl, title, category, price, available }) => (

@@ -91,3 +91,23 @@
   margin-top: 24px;
   text-align: center;
 }
+
+.sortUp {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  margin-top: 24px;
+  margin: right;
+  font-size: 13px;
+  color: rgb(46, 210, 76);
+}
+
+.sortDown {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  margin-top: 24px;
+  margin: right;
+  font-size: 13px;
+  color: rgb(89, 5, 5);
+}
